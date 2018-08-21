@@ -1,27 +1,12 @@
 /**
  * Created by William Davis on 17/08/2018.
  */
+package Launchpad;
+
 import javax.sound.midi.*;
 
 public class Launchpad
 {
-    /**
-     * The NONE class variable defines the value to be used to set an led to off.
-     */
-    public static final int NONE = 0;
-    /**
-     * The LOW class variable defines the value to be used to set an led to low brightness.
-     */
-    public static final int LOW = 1;
-    /**
-     * The MID class variable defines the value to be used to set an led to medium brightness.
-     */
-    public static final int MID = 2;
-    /**
-     * The HIGH class variable defines the value to be used to set an led to maximum brightness.
-     */
-    public static final int HIGH = 3;
-
     /**
      * The GRID_SIZE class variable is used to define the width and height of the square button grid on the launchpad.
      */
@@ -38,20 +23,6 @@ public class Launchpad
      * The GRID_SIDE_ROW_OFFSET class variable is used to define the offset from 0 of the side keys address.
      */
     private static final int GRID_SIDE_ROW_OFFSET = 8;
-
-    /**
-     * The BASE class variable defines the base value for any solid colour.
-     */
-    private static final int BASE = 12;
-    /**
-     * The BASE_FLASHING class variable defines the base value for any flashing colour.
-     */
-    private static final int BASE_FLASHING = 8;
-
-    /**
-     * The MULTIPLIER_GREEN class variable is used to define the multiplier required for green colour values.
-     */
-    private static final int MULTIPLIER_GREEN = 16;
 
     /**
      * The CONTROLLER_GRID class variable is used to define the controller to use for accessing the grid.
@@ -155,30 +126,6 @@ public class Launchpad
         }
     }
 
-    public int createColour(int red, int green)
-    {
-        return this.createColour(red, green, false);
-    }
-
-    public int createColour(int red, int green, boolean flashing)
-    {
-        if(flashing && !this.flashEnabled)
-        {
-            this.setFlash(true);
-        }
-        int sum = 0;
-        if(flashing)
-        {
-            sum += BASE_FLASHING;
-        }
-        else
-        {
-            sum += BASE;
-        }
-        sum += red + MULTIPLIER_GREEN * green;
-        return sum;
-    }
-
     public void reset()
     {
         if(this.valid)
@@ -192,15 +139,27 @@ public class Launchpad
         }
     }
 
-    public void setGridKey(int x, int y, int colour)
+    private void autoEnableFlash(KeyColour colour)
+    {
+        if(!flashEnabled)
+        {
+            if(colour.isFlashing())
+            {
+                this.setFlash(true);
+            }
+        }
+    }
+
+    public void setGridKey(int x, int y, KeyColour colour)
     {
         if(0 <= x && x < GRID_SIZE)
         {
             if(0 <= y && y < GRID_SIZE)
             {
+                this.autoEnableFlash(colour);
                 try
                 {
-                    this.sendMessage(CONTROLLER_GRID, x + y * GRID_MULTIPLIER, colour);
+                    this.sendMessage(CONTROLLER_GRID, x + y * GRID_MULTIPLIER, colour.getColourValue());
                 }
                 catch(InvalidMidiDataException ex)
                 {}
@@ -208,29 +167,20 @@ public class Launchpad
         }
     }
 
-    public void setGridKey(int x, int y, int red, int green)
-    {
-        this.setGridKey(x, y, this.createColour(red, green, false));
-    }
-
-    public void setGridKey(int x, int y, int red, int green, boolean flashing)
-    {
-        this.setGridKey(x, y, this.createColour(red, green, flashing));
-    }
-
-    public void setMenuKey(boolean topRow, int button, int colour)
+    public void setMenuKey(boolean topRow, int button, KeyColour colour)
     {
         if(0 <= button && button < GRID_SIZE)
         {
+            this.autoEnableFlash(colour);
             try
             {
                 if(topRow)
                 {
-                    this.sendMessage(CONTROLLER_MASTER, GRID_TOP_ROW_OFFSET + button, colour);
+                    this.sendMessage(CONTROLLER_MASTER, GRID_TOP_ROW_OFFSET + button, colour.getColourValue());
                 }
                 else
                 {
-                    this.sendMessage(CONTROLLER_GRID, GRID_MULTIPLIER * button + GRID_SIDE_ROW_OFFSET, colour);
+                    this.sendMessage(CONTROLLER_GRID, GRID_MULTIPLIER * button + GRID_SIDE_ROW_OFFSET, colour.getColourValue());
                 }
             }
             catch(InvalidMidiDataException ex)
