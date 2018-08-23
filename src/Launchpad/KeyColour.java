@@ -8,46 +8,46 @@ import java.util.Random;
 public class KeyColour
 {
     /**
-     * The NONE class variable defines the value to be used to set an led to off.
+     * The LEVEL enum is used to define the accepted LED brightnesses.
      */
-    public static final int NONE = 0;
-    /**
-     * The LOW class variable defines the value to be used to set an led to low brightness.
-     */
-    public static final int LOW = 1;
-    /**
-     * The MID class variable defines the value to be used to set an led to medium brightness.
-     */
-    public static final int MID = 2;
-    /**
-     * The HIGH class variable defines the value to be used to set an led to maximum brightness.
-     */
-    public static final int HIGH = 3;
+    public enum Level
+    {
+        NONE (0),
+        LOW (1),
+        MID (2),
+        HIGH (3);
+
+        private int value;
+        Level(int value)
+        {
+            this.value = value;
+        }
+    };
 
     /**
      * The SOLID_GREEN class variable is used to provide a preset for a solid green key.
      */
-    public static final KeyColour SOLID_GREEN = new KeyColour(NONE, HIGH);
+    public static final KeyColour SOLID_GREEN = new KeyColour(Level.NONE, Level.HIGH);
     /**
      * The FLASHING_GREEN class variable is used to provide a preset for a flashing green key.
      */
-    public static final KeyColour FLASHING_GREEN = new KeyColour(NONE, HIGH, true);
+    public static final KeyColour FLASHING_GREEN = new KeyColour(Level.NONE, Level.HIGH, true);
     /**
      * The SOLID_RED class variable is used to provide a preset for a solid red key.
      */
-    public static final KeyColour SOLID_RED = new KeyColour(HIGH, NONE);
+    public static final KeyColour SOLID_RED = new KeyColour(Level.HIGH, Level.NONE);
     /**
      * The FLASHING_RED class variable is used to provide a preset for a flashing red key.
      */
-    public static final KeyColour FLASHING_RED = new KeyColour(HIGH, NONE, true);
+    public static final KeyColour FLASHING_RED = new KeyColour(Level.HIGH, Level.NONE, true);
     /**
      * The SOLID_AMBER class variable is used to provide a preset for a solid amber key.
      */
-    public static final KeyColour SOLID_AMBER = new KeyColour(HIGH, HIGH);
+    public static final KeyColour SOLID_AMBER = new KeyColour(Level.HIGH, Level.HIGH);
     /**
      * The FLASHING_AMBER class variable is used to provide a preset for a flashing amber key.
      */
-    public static final KeyColour FLASHING_AMBER = new KeyColour(HIGH, HIGH, true);
+    public static final KeyColour FLASHING_AMBER = new KeyColour(Level.HIGH, Level.HIGH, true);
 
     /**
      * The BASE class variable defines the base value for any solid colour.
@@ -77,7 +77,7 @@ public class KeyColour
      * @param red - The intensity of the red in the colour.
      * @param green - The intensity of the green in the colour.
      */
-    public KeyColour(int red, int green)
+    public KeyColour(Level red, Level green)
     {
         this(red, green, false);
     }
@@ -88,8 +88,16 @@ public class KeyColour
      * @param green - The intensity of the green in the colour.
      * @param flashing - A flag to set if the colour should flash.
      */
-    public KeyColour(int red, int green, boolean flashing)
+    public KeyColour(Level red, Level green, boolean flashing) throws NullPointerException
     {
+        if(red == null)
+        {
+            throw new NullPointerException("Red must not be null.");
+        }
+        else if(green == null)
+        {
+            throw new NullPointerException("Green must not be null.");
+        }
         this.flashing = flashing;
         this.colourValue = 0;
         if(flashing)
@@ -100,23 +108,25 @@ public class KeyColour
         {
             this.colourValue += BASE;
         }
-        if(red < LOW)
+        int r = red.value;
+        if(r < Level.NONE.value)
         {
-            red = LOW;
+            r = Level.NONE.value;
         }
-        else if(red > HIGH)
+        else if(r > Level.HIGH.value)
         {
-            red = HIGH;
+            r = Level.HIGH.value;
         }
-        if(green < LOW)
+        int g = green.value;
+        if(g < Level.NONE.value)
         {
-            green = LOW;
+            g = Level.NONE.value;
         }
-        else if(green > HIGH)
+        else if(g > Level.HIGH.value)
         {
-            green = HIGH;
+            g = Level.HIGH.value;
         }
-        this.colourValue += red + MULTIPLIER_GREEN * green;
+        this.colourValue += r + MULTIPLIER_GREEN * g;
     }
 
     /**
@@ -154,13 +164,23 @@ public class KeyColour
     public static KeyColour randomColour(boolean flashing)
     {
         Random r = new Random();
-        int red = r.nextInt(HIGH);
-        int green = r.nextInt(HIGH);
+        boolean red = r.nextBoolean();
+        Level re = Level.NONE;
+        if(red)
+        {
+            re = Level.HIGH;
+        }
+        boolean green  = r.nextBoolean();
+        Level gr = Level.NONE;
+        if(green)
+        {
+            gr = Level.HIGH;
+        }
         boolean flash = false;
         if(flashing)
         {
             flash = r.nextBoolean();
         }
-        return new KeyColour(red, green, flash);
+        return new KeyColour(re, gr, flash);
     }
 }
