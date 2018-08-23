@@ -1,24 +1,18 @@
 /**
  * Created by William Davis on 23/08/2018.
  */
-package Launchpad.Messages;
+package Launchpad.Output;
 
+import Launchpad.Constants;
 import Launchpad.KeyColour;
 
 public class MenuMessage extends DefaultMessage
 {
-    public enum Menu {TOP, SIDE};
-
-    /**
-     * The TOP_ROW_OFFSET class variable is used to define the offset from 0 of the top keys address.
-     */
-    private static final int TOP_ROW_OFFSET  = 104;
-
     private boolean topMenu;
     private int key;
     private KeyColour colour;
 
-    public MenuMessage(Menu menu, int button, KeyColour colour) throws NullPointerException, IndexOutOfBoundsException
+    public MenuMessage(Constants.Menu menu, int button, KeyColour colour) throws NullPointerException, IndexOutOfBoundsException
     {
         if(menu == null)
         {
@@ -32,7 +26,7 @@ public class MenuMessage extends DefaultMessage
         {
             throw new IndexOutOfBoundsException("Button must be between 0 and " + GRID_SIZE + ".");
         }
-        if(menu == Menu.TOP)
+        if(menu == Constants.Menu.TOP)
         {
             this.topMenu = true;
         }
@@ -50,13 +44,13 @@ public class MenuMessage extends DefaultMessage
         byte[] data = new byte[3];
         if(this.topMenu)
         {
-            data[0] = CONTROLLER_MAIN;
-            data[1] = (byte)(TOP_ROW_OFFSET + this.key);
+            data[0] = Constants.CONTROLLER_MAIN;
+            data[1] = (byte)(Constants.TOP_MENU_OFFSET + this.key);
         }
         else
         {
-            data[0] = CONTROLLER_GRID;
-            data[1] = (byte)(ROW_MULTIPLIER * this.key + GRID_SIZE);
+            data[0] = Constants.CONTROLLER_GRID;
+            data[1] = (byte)(Constants.ROW_MULTIPLIER * this.key + GRID_SIZE);
         }
         data[2] = (byte)this.colour.getColourValue();
         return data;

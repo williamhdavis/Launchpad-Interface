@@ -2,17 +2,15 @@
  * Created by William Davis on 16/08/2018.
  */
 import Launchpad.*;
-import Launchpad.Messages.CommandMessage;
-import Launchpad.Messages.CommandMessage.Command;
-import Launchpad.Messages.GridMessage;
-import Launchpad.Messages.MenuMessage;
-import Launchpad.Messages.MenuMessage.Menu;
+import Launchpad.Output.CommandMessage;
+import Launchpad.Output.CommandMessage.Command;
+import Launchpad.Output.GridMessage;
+import Launchpad.Output.MenuMessage;
 
-public class Main
+public class TestLights
 {
     public static void main(String[] args)
     {
-        // DEBUGGING CODE
         try
         {
             Launchpad launchpad = new Launchpad();
@@ -38,14 +36,14 @@ public class Main
                 int x = 0;
                 while(x < 8)
                 {
-                    launchpad.sendMessage(new MenuMessage(Menu.TOP, x, KeyColour.randomColour(true)));
+                    launchpad.sendMessage(new MenuMessage(Constants.Menu.TOP, x, KeyColour.randomColour(true)));
                     ++x;
                 }
 
                 x = 0;
                 while(x < 8)
                 {
-                    launchpad.sendMessage(new MenuMessage(Menu.SIDE, x, KeyColour.randomColour(true)));
+                    launchpad.sendMessage(new MenuMessage(Constants.Menu.SIDE, x, KeyColour.randomColour(true)));
                     ++x;
                 }
 

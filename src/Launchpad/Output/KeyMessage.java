@@ -1,8 +1,9 @@
 /**
  * Created by William Davis on 22/08/2018.
  */
-package Launchpad.Messages;
+package Launchpad.Output;
 
+import Launchpad.Constants;
 import Launchpad.KeyColour;
 
 public class KeyMessage extends DefaultMessage
@@ -36,7 +37,7 @@ public class KeyMessage extends DefaultMessage
     @Override
     protected byte[] generateBytes()
     {
-        byte key = (byte)(x + y * ROW_MULTIPLIER);
-        return new byte[]{CONTROLLER_GRID, key, (byte)colour.getColourValue()};
+        byte key = (byte)(x + y * Constants.ROW_MULTIPLIER);
+        return new byte[]{Constants.CONTROLLER_GRID, key, (byte)colour.getColourValue()};
     }
 }

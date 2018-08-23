@@ -1,7 +1,7 @@
 /**
  * Created by William Davis on 22/08/2018.
  */
-package Launchpad.Messages;
+package Launchpad.Output;
 
 import javax.sound.midi.MidiMessage;
 

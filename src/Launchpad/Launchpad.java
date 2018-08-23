@@ -3,8 +3,9 @@
  */
 package Launchpad;
 
-import Launchpad.Messages.CommandMessage;
-import Launchpad.Messages.DefaultMessage;
+import Launchpad.Input.InputReceiver;
+import Launchpad.Output.CommandMessage;
+import Launchpad.Output.DefaultMessage;
 
 import javax.sound.midi.*;
 
@@ -14,7 +15,7 @@ public class Launchpad
     private MidiDevice receiverDevice;
     private MidiDevice transmitterDevice;
     private Receiver receiver;
-    private Transmitter transmitter;
+    private InputReceiver transmitterReceiver;
     private boolean flashEnabled;
 
     public Launchpad() throws MidiUnavailableException
@@ -43,7 +44,9 @@ public class Launchpad
             this.receiverDevice.open();
             this.receiver = this.receiverDevice.getReceiver();
             this.transmitterDevice.open();
-            this.transmitter = this.transmitterDevice.getTransmitter();
+            Transmitter transmitter = this.transmitterDevice.getTransmitter();
+            this.transmitterReceiver = new InputReceiver();
+            transmitter.setReceiver(this.transmitterReceiver);
             this.flashEnabled = false;
             this.valid = true;
         }
@@ -66,6 +69,11 @@ public class Launchpad
             this.receiverDevice.close();
             this.transmitterDevice.close();
         }
+    }
+
+    public InputReceiver getTransmitter()
+    {
+        return this.transmitterReceiver;
     }
 
     public void sendMessage(DefaultMessage message) throws InvalidMidiDataException

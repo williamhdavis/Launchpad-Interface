@@ -1,7 +1,9 @@
 /**
  * Created by William Davis on 23/08/2018.
  */
-package Launchpad.Messages;
+package Launchpad.Output;
+
+import Launchpad.Constants;
 
 public class CommandMessage extends DefaultMessage
 {
@@ -43,6 +45,6 @@ public class CommandMessage extends DefaultMessage
     @Override
     protected byte[] generateBytes()
     {
-        return new byte[]{CONTROLLER_MAIN, KEY_MASTER, (byte)this.command.value};
+        return new byte[]{Constants.CONTROLLER_MAIN, KEY_MASTER, (byte)this.command.value};
     }
 }

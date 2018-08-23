@@ -25,6 +25,10 @@ public class KeyColour
     };
 
     /**
+     * The NONE class variable is used to provide a preset for a key showing no colour.
+     */
+    public static final KeyColour NONE = new KeyColour(Level.NONE, Level.NONE);
+    /**
      * The SOLID_GREEN class variable is used to provide a preset for a solid green key.
      */
     public static final KeyColour SOLID_GREEN = new KeyColour(Level.NONE, Level.HIGH);

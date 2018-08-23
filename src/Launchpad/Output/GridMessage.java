@@ -1,8 +1,9 @@
 /**
  * Created by William Davis on 22/08/2018.
  */
-package Launchpad.Messages;
+package Launchpad.Output;
 
+import Launchpad.Constants;
 import Launchpad.KeyColour;
 
 public class GridMessage extends DefaultMessage
@@ -43,7 +44,7 @@ public class GridMessage extends DefaultMessage
     protected byte[] generateBytes()
     {
         byte[] values = new byte[GRID_SIZE * GRID_SIZE + 1];
-        values[0] = CONTROLLER_FULL;
+        values[0] = Constants.CONTROLLER_FULL;
         int v = 1;
         int y = 0;
         while(y < this.data.length)
