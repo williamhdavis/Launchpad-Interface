@@ -5,6 +5,9 @@ package Launchpad;
 
 public class Constants
 {
+    /**
+     * The Menu enum is used to set which of the launchpads menu buttons is being accessed.
+     */
     public enum Menu {TOP, SIDE};
 
     /**

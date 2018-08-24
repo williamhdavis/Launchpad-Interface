@@ -4,19 +4,18 @@
 import Launchpad.Constants;
 import Launchpad.Input.LaunchpadListener;
 import Launchpad.*;
-import Launchpad.Output.KeyMessage;
-import Launchpad.Output.MenuMessage;
+import Launchpad.Output.Message;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 
 public class PressToLight implements LaunchpadListener
 {
-    private Launchpad launchpad;
+    private Device launchpad;
 
     public PressToLight() throws MidiUnavailableException
     {
-        this.launchpad = new Launchpad();
+        this.launchpad = new Device();
         this.launchpad.getTransmitter().addListener(this);
     }
 
@@ -25,7 +24,7 @@ public class PressToLight implements LaunchpadListener
     {
         try
         {
-            this.launchpad.sendMessage(new MenuMessage(menu, key, KeyColour.SOLID_RED));
+            this.launchpad.sendMessage(new Message(menu, key, KeyColour.SOLID_RED));
         }
         catch(InvalidMidiDataException ex)
         {}
@@ -36,7 +35,7 @@ public class PressToLight implements LaunchpadListener
     {
         try
         {
-            this.launchpad.sendMessage(new MenuMessage(menu, key, KeyColour.NONE));
+            this.launchpad.sendMessage(new Message(menu, key, KeyColour.NONE));
         }
         catch(InvalidMidiDataException ex)
         {}
@@ -47,7 +46,7 @@ public class PressToLight implements LaunchpadListener
     {
         try
         {
-            this.launchpad.sendMessage(new KeyMessage(x, y, KeyColour.SOLID_GREEN));
+            this.launchpad.sendMessage(new Message(x, y, KeyColour.SOLID_GREEN));
         }
         catch(InvalidMidiDataException ex)
         {}
@@ -58,7 +57,7 @@ public class PressToLight implements LaunchpadListener
     {
         try
         {
-            this.launchpad.sendMessage(new KeyMessage(x, y, KeyColour.NONE));
+            this.launchpad.sendMessage(new Message(x, y, KeyColour.NONE));
         }
         catch(InvalidMidiDataException ex)
         {}

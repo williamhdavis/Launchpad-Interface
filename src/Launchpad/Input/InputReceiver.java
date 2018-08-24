@@ -12,15 +12,30 @@ import java.util.List;
 
 public class InputReceiver implements Receiver
 {
-    private int VALUE_PRESS = 127;
+    /**
+     * The VALUE_PRESS class variable is used to define the value sent by the launchpad when a key down event happens.
+     */
+    private static int VALUE_PRESS = 127;
 
+    /**
+     * The listeners instance variable is used to store any listeners that should be sent incoming messages from the launchpad.
+     */
     private List<LaunchpadListener> listeners = new ArrayList<>();
 
+    /**
+     * The addListener instance variable is used to add a new listener.
+     * @param listener - The listener to add.
+     */
     public void addListener(LaunchpadListener listener)
     {
         this.listeners.add(listener);
     }
 
+    /**
+     * The send instance method is used to format and send launchpad key presses to each set listener.
+     * @param message - The midi message from the launchpad.
+     * @param timeStamp - The time the message was sent.
+     */
     @Override
     public void send(MidiMessage message, long timeStamp)
     {
